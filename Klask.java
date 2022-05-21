@@ -1,7 +1,6 @@
-public class Klask
-{
+public class Klask {
     public static void main(String[] args) {
-        GameArena arena = new GameArena(500, 500, true);
-        arena.run();
+        // create board of 1200x800
+        KlaskBoard board = new KlaskBoard(1200, 800);
     }
 }
