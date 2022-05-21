@@ -12,6 +12,8 @@ public class Ball
 	
 	private double xPosition;			// The X coordinate of this Ball
 	private double yPosition;			// The Y coordinate of this Ball
+	private double xVelocity;			// The X velocity of this Ball
+	private double yVelocity;			// The Y velocity of this Ball
 	private double size;				// The diameter of this Ball
 	private int layer;					// The layer of this ball is on.
 	private String colour;				// The colour of this Ball
@@ -88,6 +90,38 @@ public class Ball
 	public void setYPosition(double y)
 	{
 		this.yPosition = y;
+	}
+
+	/**
+	 * Gets the current x velocity of this Ball
+	 * @return the x velocity of the ball.
+	 */
+	public double getXVelocity() {
+		return this.xVelocity;
+	}
+
+	/**
+	 * Sets the x velocity of this Ball to the given velocity.
+	 * @param x the new x velocity of this Ball
+	 */
+	public void setXVelocity(double x) {
+		this.xVelocity = x;
+	}
+
+	/**
+	 * Gets the current y velocity of this Ball
+	 * @return the y velocity of the ball.
+	 */
+	public double getYVelocity() {
+		return this.yVelocity;
+	}
+
+	/**
+	 * Sets the y velocity of this Ball to the given velocity.
+	 * @param y the new y velocity of this Ball
+	 */
+	public void setYVelocity(double y) {
+		this.yVelocity = y;
 	}
 
 	/**
@@ -170,4 +204,46 @@ public class Ball
 
 		return distance < size/2 + b.size/2;
 	}
+
+	/**
+	 * Deflects this Ball with the given Ball, altering the velocities of both.
+	 * 
+	 * @param otherBall the other ball with which to deflect.
+	 */
+	public void deflectWith(Ball otherBall) {
+        // Calculate initial momentum of the balls... We assume unit mass here.
+        double p1InitialMomentum = Math.sqrt(this.xVelocity * this.xVelocity + this.yVelocity * this.yVelocity);
+        double p2InitialMomentum = Math.sqrt(otherBall.getXVelocity() * otherBall.getXVelocity() + otherBall.getYVelocity() * otherBall.getYVelocity());
+        // calculate motion vectors
+        double[] p1Trajectory = { this.xVelocity, this.yVelocity };
+        double[] p2Trajectory = { otherBall.getXVelocity(), otherBall.getYVelocity() };
+        // Calculate Impact Vector
+        double[] impactVector = { otherBall.getXPosition() - this.xPosition, otherBall.getYPosition() - this.yPosition };
+        double[] impactVectorNorm = Utils.normalizeVector(impactVector);
+        // Calculate scalar product of each trajectory and impact vector
+        double p1dotImpact = Math.abs(p1Trajectory[0] * impactVectorNorm[0] + p1Trajectory[1] * impactVectorNorm[1]);
+        double p2dotImpact = Math.abs(p2Trajectory[0] * impactVectorNorm[0] + p2Trajectory[1] * impactVectorNorm[1]);
+        // Calculate the deflection vectors - the amount of energy transferred from one
+        // ball to the other in each axis
+        double[] p1Deflect = { -impactVectorNorm[0] * p2dotImpact, -impactVectorNorm[1] * p2dotImpact };
+        double[] p2Deflect = { impactVectorNorm[0] * p1dotImpact, impactVectorNorm[1] * p1dotImpact };
+        // Calculate the final trajectories
+        double[] p1FinalTrajectory = { p1Trajectory[0] + p1Deflect[0] - p2Deflect[0],
+                p1Trajectory[1] + p1Deflect[1] - p2Deflect[1] };
+        double[] p2FinalTrajectory = { p2Trajectory[0] + p2Deflect[0] - p1Deflect[0],
+                p2Trajectory[1] + p2Deflect[1] - p1Deflect[1] };
+        // Calculate the final energy in the system.
+        double p1FinalMomentum = Math
+                .sqrt(p1FinalTrajectory[0] * p1FinalTrajectory[0] + p1FinalTrajectory[1] * p1FinalTrajectory[1]);
+        double p2FinalMomentum = Math
+                .sqrt(p2FinalTrajectory[0] * p2FinalTrajectory[0] + p2FinalTrajectory[1] * p2FinalTrajectory[1]);
+        // Scale the resultant trajectories if we've accidentally broken the laws of
+        // physics.
+        double mag = (p1InitialMomentum + p2InitialMomentum) / (p1FinalMomentum + p2FinalMomentum);
+        // Calculate the final x and y speed settings for the two balls after collision.
+        this.xVelocity = p1FinalTrajectory[0] * mag;
+        this.yVelocity = p1FinalTrajectory[1] * mag;
+		otherBall.setXVelocity(p2FinalTrajectory[0] * mag);
+		otherBall.setYVelocity(p2FinalTrajectory[1] * mag);
+    }
 }
