@@ -1,5 +1,3 @@
-import org.w3c.dom.css.Rect;
-
 /**
  * @author Hassan Tahir
  * @version 1.0
@@ -9,8 +7,9 @@ public class KlaskBoard {
     private int width; // board width
     private int height; // board height
     private GameArena arena; // underlying GameArena to draw to
-    private Ball[] corners; // corners
-    private Ball[] goals; // goals
+    private Ball[] corners;
+    private Ball[] goals;
+    private Player[] players;
 
     /**
      * Creates a board of the specified width and height.
@@ -42,13 +41,24 @@ public class KlaskBoard {
 
         // centreline
         arena.addLine(new Line(w / 2, 170, w / 2, h - 170, 2, "PINK"));
+
+        // players
+        createPlayers();
     }
 
     /**
-     * Runs the arena
+     * Gets the internal GameArena
+     * @return GameArena
+     */
+    public GameArena getArena() {
+        return arena;
+    }
+
+    /**
+     * Runs the board for 1 frame
      */
     public void run() {
-        arena.run();
+        arena.pause();
     }
 
     /**
@@ -74,6 +84,16 @@ public class KlaskBoard {
     }
 
     /**
+     * Creates players and adds them to the board.
+     */
+    public void createPlayers() {
+        players = new Player[] {
+            new Player(200, height / 2, this),
+            new Player(width - 200, height / 2, this)
+        };
+    }
+
+    /**
      * Adds specified Ball to the board.
      * @param b Ball to add.
      */
@@ -87,5 +107,21 @@ public class KlaskBoard {
      */
     public void addRectangle(Rectangle r) {
         arena.addRectangle(r);
+    }
+
+    /**
+     * Gets a Player
+     * @param n Number of player to get (1 or 2)
+     */
+    public Player getPlayer(int n) {
+        return players[n - 1];
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }
