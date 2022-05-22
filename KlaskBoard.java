@@ -10,6 +10,7 @@ public class KlaskBoard {
     private Ball[] corners;
     private Ball[] goals;
     private Player[] players;
+    private GameBall gameBall; // ie ball interacted with by players
 
     /**
      * Creates a board of the specified width and height.
@@ -24,7 +25,6 @@ public class KlaskBoard {
         // board background
         arena.addRectangle(new Rectangle(100, 150, w - 200, h - 300, "PINK"));
         arena.addRectangle(new Rectangle(120, 170, w - 240, h - 340, "BLUE"));
-
         // corners
         createCorners();
         for (Ball b : corners) {
@@ -32,18 +32,17 @@ public class KlaskBoard {
             // create "inner" ball for visual purposes
             arena.addBall(new Ball(b.getXPosition(), b.getYPosition(), b.getSize() - 15, "BLUE"));
         }
-
         // goals
         createGoals();
         for (Ball b : goals) {
             arena.addBall(b);
         }
-
         // centreline
         arena.addLine(new Line(w / 2, 170, w / 2, h - 170, 2, "PINK"));
-
         // players
         createPlayers();
+        // ball
+        createGameBall();
     }
 
     /**
@@ -94,6 +93,14 @@ public class KlaskBoard {
     }
 
     /**
+     * Creates game ball
+     */
+    public void createGameBall() {
+        gameBall = new GameBall(width / 2, height / 2, 15, "ORANGE");
+        addBall(gameBall.getBall());
+    }
+
+    /**
      * Adds specified Ball to the board.
      * @param b Ball to add.
      */
@@ -117,6 +124,10 @@ public class KlaskBoard {
         return players[n - 1];
     }
 
+    public GameBall getGameBall() {
+        return gameBall;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -138,15 +149,57 @@ public class KlaskBoard {
             double yPosition = player.getPlayerBall().getYPosition();
             if (xPosition < leftBound) {
                 player.setPosition(leftBound, yPosition);
+                player.getPlayerBall().setXVelocity(0);
             }
             if (xPosition > rightBound) {
                 player.setPosition(rightBound, yPosition);
+                player.getPlayerBall().setXVelocity(0);
             }
             if (yPosition < topBound) {
                 player.setPosition(xPosition, topBound);
+                player.getPlayerBall().setYVelocity(0);
             }
             if (yPosition > bottomBound) {
                 player.setPosition(xPosition, bottomBound);
+                player.getPlayerBall().setYVelocity(0);
+            }
+        }
+    }
+
+    public void runBallBoardCollisions() {
+        Ball ball = gameBall.getBall();
+        int leftBound = 120;
+        int rightBound = width - 120;
+        int topBound = 170;
+        int bottomBound = height - 170;
+        double xPosition = ball.getXPosition();
+        double yPosition = ball.getYPosition();
+        double xVelocity = ball.getXVelocity();
+        double yVelocity = ball.getYVelocity();
+        if (xPosition < leftBound) {
+            ball.setXPosition(leftBound);
+            ball.setXVelocity(-xVelocity);
+        }
+        if (xPosition > rightBound) {
+            ball.setXPosition(rightBound);
+            ball.setXVelocity(-xVelocity);
+        }
+        if (yPosition < topBound) {
+            ball.setYPosition(topBound);
+            ball.setYVelocity(-yVelocity);
+        }
+        if (yPosition > bottomBound) {
+            ball.setYPosition(bottomBound);
+            ball.setYVelocity(-yVelocity);
+        }
+    }
+
+    public void runPlayerBallCollisions() {
+        // iterate through players
+        for (Player player : players) {
+            Ball playerBall = player.getPlayerBall();
+            if (playerBall.collides(gameBall.getBall())) {
+                gameBall.getBall().deflectWith(playerBall);
             }
         }
     }
