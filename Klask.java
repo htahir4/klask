@@ -5,9 +5,11 @@ public class Klask {
 
         // main game loop
         while (true) {
-            board.run();
+            // collisions run twice to avoid movement out of bounds between frames
+            board.runPlayerBoardCollisions();
+            board.renderFrame();
             Input.handleInputs(board);
-            Player.runBoardCollision(board);
+            board.runPlayerBoardCollisions();
         }
     }
 }

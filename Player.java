@@ -44,4 +44,11 @@ public class Player {
         playerBall.move(x, y);
         playerRectangle.move(x, y);
     }
+
+    public void setPosition(double x, double y) {
+        playerBall.setXPosition(x);
+        playerBall.setYPosition(y);
+        playerRectangle.setXPosition(x - 8);
+        playerRectangle.setYPosition(y - 35);
+    }
 }

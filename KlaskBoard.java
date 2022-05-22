@@ -57,7 +57,7 @@ public class KlaskBoard {
     /**
      * Runs the board for 1 frame
      */
-    public void run() {
+    public void renderFrame() {
         arena.pause();
     }
 
@@ -123,5 +123,31 @@ public class KlaskBoard {
 
     public int getHeight() {
         return height;
+    }
+
+    public void runPlayerBoardCollisions() {
+        // iterate through players 1 & 2
+        for (int i = 1; i <= 2; i++) {
+            Player player = players[i - 1];
+            // arena.addRectangle(new Rectangle(120, 170, w - 240, h - 340, "BLUE"));
+            int leftBound = i == 1 ? 120 : width / 2;
+            int rightBound = i == 1 ? width / 2: width - 120;
+            int topBound = 170;
+            int bottomBound = height - 170;
+            double xPosition = player.getPlayerBall().getXPosition();
+            double yPosition = player.getPlayerBall().getYPosition();
+            if (xPosition < leftBound) {
+                player.setPosition(leftBound, yPosition);
+            }
+            if (xPosition > rightBound) {
+                player.setPosition(rightBound, yPosition);
+            }
+            if (yPosition < topBound) {
+                player.setPosition(xPosition, topBound);
+            }
+            if (yPosition > bottomBound) {
+                player.setPosition(xPosition, bottomBound);
+            }
+        }
     }
 }
