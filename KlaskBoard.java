@@ -7,21 +7,21 @@ import java.text.FieldPosition;
  *          Class to represent the board on which the game is played.
  */
 public class KlaskBoard {
-    private int width; // board width
-    private int height; // board height
     private GameArena arena = new GameArena(1200, 800, true); // underlying GameArena to draw to
+    private int width = arena.getArenaWidth(); // board width
+    private int height = arena.getArenaHeight(); // board height
     private Ball[] corners;
     private Ball[] goals;
     private Player[] players;
     private GameBall gameBall; // ie ball interacted with by players
     private Magnet[] magnets = new Magnet[]{
-        new Magnet(arena.getArenaWidth()/2, arena.getArenaHeight()/2+100, 10, "WHITE"),
-        new Magnet(arena.getArenaWidth()/2, arena.getArenaHeight()/2, 10, "WHITE"),
-        new Magnet(arena.getArenaWidth()/2, arena.getArenaHeight()/2-100, 10, "WHITE")};
+        new Magnet(width/2, height/2+100, 10, "WHITE"),
+        new Magnet(width/2, height/2, 10, "WHITE"),
+        new Magnet(width/2, height/2-100, 10, "WHITE")};
     private int scorep1 = 0;
     private int scorep2 = 0;
-    private Text score1 = new Text(String.valueOf(scorep1), 25, 50, arena.getArenaHeight()/2, "WHITE", 100);
-    private Text score2 = new Text(String.valueOf(scorep2), 25, arena.getArenaWidth()-75, arena.getArenaHeight()/2, "WHITE", 100);
+    private Text score1 = new Text(String.valueOf(scorep1), 25, 50, height/2, "WHITE", 100);
+    private Text score2 = new Text(String.valueOf(scorep2), 25, width-75, height/2, "WHITE", 100);
 
     /**
      * Creates a board of the specified width and height.
@@ -30,10 +30,6 @@ public class KlaskBoard {
      * @param h Height of the board.
      */
     public KlaskBoard() {
-        int w = arena.getArenaWidth();
-        int h = arena.getArenaHeight();
-        width = arena.getArenaWidth();
-        height = arena.getArenaHeight();
         // board background
         arena.addRectangle(new Rectangle(100, 150, w - 200, h - 300, "PINK"));
         arena.addRectangle(new Rectangle(120, 170, w - 240, h - 340, "BLUE"));
@@ -50,7 +46,7 @@ public class KlaskBoard {
             arena.addBall(b);
         }
         // centreline
-        arena.addLine(new Line(w / 2, 170, w / 2, h - 170, 2, "PINK"));
+        arena.addLine(new Line(width / 2, 170, width / 2, height - 170, 2, "PINK"));
         // players
         createPlayers();
         // ball
