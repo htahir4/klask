@@ -4,6 +4,7 @@
  *          Class to manage input in the game.
  */
 public class Input {
+    private static double velocity = 15;
     /**
      * Handles the input for 1 frame of the game
      * 
@@ -21,20 +22,20 @@ public class Input {
         player.getPlayerBall().setXVelocity(0);
         player.getPlayerBall().setYVelocity(0);
         if (arena.letterPressed('W')) {
-            player.changePosition(0, -5);
-            player.getPlayerBall().setYVelocity(-5);
+            player.changePosition(0, -velocity);
+            player.getPlayerBall().setYVelocity(-velocity);
         }
         if (arena.letterPressed('A')) {
-            player.changePosition(-5, 0);
-            player.getPlayerBall().setXVelocity(-5);
+            player.changePosition(-velocity, 0);
+            player.getPlayerBall().setXVelocity(-velocity);
         }
         if (arena.letterPressed('S')) {
-            player.changePosition(0, 5);
-            player.getPlayerBall().setYVelocity(5);
+            player.changePosition(0, velocity);
+            player.getPlayerBall().setYVelocity(velocity);
         }
         if (arena.letterPressed('D')) {
-            player.changePosition(5, 0);
-            player.getPlayerBall().setXVelocity(5);
+            player.changePosition(velocity, 0);
+            player.getPlayerBall().setXVelocity(velocity);
         }
     }
 
@@ -45,20 +46,20 @@ public class Input {
         player.getPlayerBall().setXVelocity(0);
         player.getPlayerBall().setYVelocity(0);
         if (arena.upPressed()) {
-            player.changePosition(0, -5);
-            player.getPlayerBall().setYVelocity(-5);
+            player.changePosition(0, -velocity);
+            player.getPlayerBall().setYVelocity(-velocity);
         }
         if (arena.leftPressed()) {
-            player.changePosition(-5, 0);
-            player.getPlayerBall().setXVelocity(-5);
+            player.changePosition(-velocity, 0);
+            player.getPlayerBall().setXVelocity(-velocity);
         }
         if (arena.downPressed()) {
-            player.changePosition(0, 5);
-            player.getPlayerBall().setYVelocity(5);
+            player.changePosition(0, velocity);
+            player.getPlayerBall().setYVelocity(velocity);
         }
         if (arena.rightPressed()) {
-            player.changePosition(5, 0);
-            player.getPlayerBall().setXVelocity(5);
+            player.changePosition(velocity, 0);
+            player.getPlayerBall().setXVelocity(velocity);
         }
     }
 }

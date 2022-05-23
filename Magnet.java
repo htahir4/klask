@@ -1,7 +1,12 @@
-public class GameBall {
+/**
+ * @author Hassan Tahir
+ * @version 1.0
+ *          Class to represent the magnets on the game board.
+ */
+public class Magnet {
     private Ball ball;
 
-    public GameBall(double x, double y, int diameter, String col) {
+    public Magnet(double x, double y, int diameter, String col) {
         ball = new Ball(x, y, diameter, col);
     }
 
@@ -13,10 +18,10 @@ public class GameBall {
     }
 
     /**
-     * @param gameBall the gameBall to set
+     * @param magnet the gameBall to set
      */
-    public void setGameBall(Ball gameBall) {
-        this.ball = gameBall;
+    public void setGameBall(Ball magnet) {
+        this.ball = magnet;
     }
 
     public void runTrajectory() {
@@ -25,3 +30,4 @@ public class GameBall {
         ball.setYVelocity(ball.getYVelocity() * 0.995);
     }
 }
+
