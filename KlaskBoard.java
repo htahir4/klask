@@ -31,8 +31,8 @@ public class KlaskBoard {
      */
     public KlaskBoard() {
         // board background
-        arena.addRectangle(new Rectangle(100, 150, w - 200, h - 300, "PINK"));
-        arena.addRectangle(new Rectangle(120, 170, w - 240, h - 340, "BLUE"));
+        arena.addRectangle(new Rectangle(100, 150, width - 200, height - 300, "PINK"));
+        arena.addRectangle(new Rectangle(120, 170, width - 240, height - 340, "BLUE"));
         // corners
         createCorners();
         for (Ball b : corners) {
